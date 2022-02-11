@@ -7,7 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const index = require('./routes/index')
-const users = require('./routes/users')
+// const users = require('./routes/users') // routes\users-test.js
 
  // error handler
 onerror(app)
@@ -30,12 +30,19 @@ app.use(views(__dirname + '/views', {
  const cors = require('koa-cors')
  app.use(cors()) //使用cors
 
+
 /**
- * zhu：添加学生接口请求
+ * zhu：添加路由接口
  * ！！！注意：使用的路由接口具有post请求需要放在bodyparser后面，否则无法req.body将为undefined！！！
  */
+// 添加学生接口请求
 const student = require('./routes/student')
 app.use(student.routes(), student.allowedMethods())
+
+// 用户登录接口
+const user = require('./routes/user')
+app.use(user.routes(), user.allowedMethods())
+
 
 
 // logger
@@ -48,7 +55,7 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+// app.use(users.routes(), users.allowedMethods()) // routes\users-test.js
 
 // error-handling
 app.on('error', (err, ctx) => {

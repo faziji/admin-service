@@ -17,10 +17,8 @@
              try{
                  //创建学生信息模型
                  const ret = await StudentModel.createStudent(req);
-                 //使用刚刚创建的学生信息ID查询学生信息详情，且返回学生信息详情信息
                  const data = await StudentModel.getStudentDetail(ret.id);
-                 console.log('1111111', data);
-  
+                 //使用刚刚创建的学生信息ID查询学生信息详情，且返回学生信息详情信息
                  ctx.response.status = 200;
                  ctx.body = {
                      code: 200,
@@ -64,7 +62,7 @@
              }catch(err){
                  ctx.response.status = 412;
                  ctx.body = {
-                     code: 412,
+                     code: 413,
                      msg: '查询失败',
                      data
                  }
