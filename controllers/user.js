@@ -2,6 +2,8 @@
  * controller 控制器
  * 控制器的主要作用为功能的处理，项目中controller目录下创建article.js，代码如下：
  */
+
+const jwt = require('jsonwebtoken')
 const UserModel = require("../modules/user");
 const {
   ParameterException,
@@ -91,8 +93,11 @@ class userController {
       // 查询用户信息详情模型
       let res = await UserModel.checkUserLogin(username, password);
       if (!!res) {
+        let data = {
+          token:`Bearer ${jwt.sign({username},'batman580',{expiresIn:3600*24*15})}`
+        }
         ctx.response.status = 200;
-        ctx.body = new Success("登录成功");
+        ctx.body = new Success(data, "登录成功");
       } else {
         ctx.response.status = 503;
         ctx.body = new Forbidden("账号或密码错误");

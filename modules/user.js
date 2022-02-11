@@ -40,6 +40,19 @@ class userModel {
     }
 
     /**
+     * 查询用户账号是否存在
+     * @param username 账号
+     * @returns {Promise<Model>}
+     */
+     static async isUsernameExited(username){
+        return await user.findOne({
+            where:{
+                username
+            }
+        });
+    }
+
+    /**
      * 用户登录
      * @param username 账号；password 密码
      * @returns {Promise<Model>}
