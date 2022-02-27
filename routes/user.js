@@ -14,8 +14,10 @@ router.prefix('/api/user')
 router.post('/create',UserController.create);
 // 用户登录
 router.post('/login',UserController.login);
+// 获取用户详情：根据username
+router.get('/detail',UserController.detailByUsername);
 // 获取用户详情
-router.get('/:id',UserController.detail)
+router.get('/detail/:id',UserController.detailById)
 
 
 module.exports = router

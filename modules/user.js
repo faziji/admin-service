@@ -31,10 +31,24 @@ class userModel {
      * @param id 账号
      * @returns {Promise<Model>}
      */
-     static async getUserDetail(id){
+     static async getUserDetailById(id){
         return await user.findOne({
             where:{
                 id
+            }
+        });
+    }
+
+
+    /**
+     * 查询用户信息的详情
+     * @param username 账号
+     * @returns {Promise<Model>}
+     */
+     static async getUserDetailByUsername(username){
+        return await user.findOne({
+            where:{
+                username
             }
         });
     }

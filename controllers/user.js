@@ -36,7 +36,7 @@ class userController {
     try {
       //创建用户信息模型
       const ret = await UserModel.createUser(req);
-      const data = await UserModel.getUserDetail(ret.id);
+      const data = await UserModel.getUserDetailById(ret.id);
 
       ctx.response.status = 200;
       ctx.body = new Success(data, "注册用户成功");
@@ -51,13 +51,14 @@ class userController {
    * @param ctx
    * @returns {Promise.<void>}
    */
-  static async detail(ctx) {
+  static async detailById(ctx) {
+    // 根据用户id查询
     let id = ctx.params.id;
 
     if (id) {
       try {
         // 查询用户信息详情模型
-        let data = await UserModel.getUserDetail(id);
+        let data = await UserModel.getUserDetailById(id);
         ctx.response.status = 200;
         ctx.body = new Success(data);
       } catch (err) {
@@ -67,6 +68,34 @@ class userController {
     } else {
       ctx.response.status = 400;
       ctx.body = new ParameterException("缺少用户id");
+    }
+  }
+
+  /**
+   * 获取用户详情：根据用户username查询
+   * @param ctx
+   * @returns {Promise.<void>}
+   */
+  static async detailByUsername(ctx) {
+    // 根据用户id查询
+    let username = ctx.query.username;
+    
+    if (username) {
+      try {
+        // 查询用户信息详情模型
+        let data = await UserModel.getUserDetailByUsername(username);
+        // 删除密码返回
+        delete data['dataValues'].password // 一定要这样删除才可
+        
+        ctx.response.status = 200;
+        ctx.body = new Success(data);
+      } catch (err) {
+        ctx.response.status = 500;
+        ctx.body = new HttpException();
+      }
+    } else {
+      ctx.response.status = 400;
+      ctx.body = new ParameterException("缺少用户username");
     }
   }
 
@@ -93,13 +122,12 @@ class userController {
       // 查询用户信息详情模型
       let res = await UserModel.checkUserLogin(username, password);
       if (!!res) {
+        ctx.response.status = 200;
         let data = {
           token:`Bearer ${jwt.sign({username},'batman580',{expiresIn:3600*24*15})}`
         }
-        ctx.response.status = 200;
         ctx.body = new Success(data, "登录成功");
       } else {
-        ctx.response.status = 503;
         ctx.body = new Forbidden("账号或密码错误");
       }
     } catch (err) {
@@ -108,5 +136,6 @@ class userController {
     }
   }
 }
+
 
 module.exports = userController;

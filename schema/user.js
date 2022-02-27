@@ -23,6 +23,38 @@
              allowNull: false,
              field: 'password'
          },
+        //  权限身份
+         role:{
+             type: DataTypes.STRING,
+             allowNull: false,
+             defaultValue:'user',
+             field: 'role'
+         },
+        //  用户头像
+         avatar:{
+             type: DataTypes.STRING,
+             allowNull: false,
+             defaultValue:'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+             field: 'avatar'
+         },
+         // 姓名
+          name:{
+             type: DataTypes.STRING,
+             allowNull: true,
+             field: 'name'
+         },
+        //  邮箱
+         email:{
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'email'
+        },
+        // 电话号码
+         phone:{
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'phone'
+        },
          // 创建时间
          createdAt:{
             type: DataTypes.DATE
