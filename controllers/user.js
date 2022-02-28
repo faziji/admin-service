@@ -3,7 +3,7 @@
  * 控制器的主要作用为功能的处理，项目中controller目录下创建article.js，代码如下：
  */
 
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const UserModel = require("../modules/user");
 const {
   ParameterException,
@@ -31,6 +31,20 @@ class userController {
       ctx.response.status = 400;
       ctx.body = new ParameterException("密码不能为空");
       return;
+    }
+
+    // 账户已存在
+    try {
+      const res = await UserModel.getUserDetailByUsername(req.username);
+      // 返回空 => 数据
+      if (res) {
+        ctx.response.status = 400;
+        ctx.body = new ParameterException("账户已存在");
+        return;
+      }
+    } catch (error) {
+      ctx.response.status = 500;
+      ctx.body = new HttpException();
     }
 
     try {
@@ -79,14 +93,14 @@ class userController {
   static async detailByUsername(ctx) {
     // 根据用户id查询
     let username = ctx.query.username;
-    
+
     if (username) {
       try {
         // 查询用户信息详情模型
         let data = await UserModel.getUserDetailByUsername(username);
         // 删除密码返回
-        delete data['dataValues'].password // 一定要这样删除才可
-        
+        delete data["dataValues"].password; // 一定要这样删除才可
+
         ctx.response.status = 200;
         ctx.body = new Success(data);
       } catch (err) {
@@ -98,7 +112,6 @@ class userController {
       ctx.body = new ParameterException("缺少用户username");
     }
   }
-
 
   /**
    * 用户登录
@@ -124,8 +137,10 @@ class userController {
       if (!!res) {
         ctx.response.status = 200;
         let data = {
-          token:`Bearer ${jwt.sign({username},'batman580',{expiresIn:3600*24*15})}`
-        }
+          token:jwt.sign({ username }, 'abcd', {
+            expiresIn: '30d'
+          }),
+        };
         ctx.body = new Success(data, "登录成功");
       } else {
         ctx.body = new Forbidden("账号或密码错误");
@@ -136,6 +151,5 @@ class userController {
     }
   }
 }
-
 
 module.exports = userController;

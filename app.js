@@ -6,6 +6,9 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+const token = require("./modules/jsonwebtoken")
+// const koaJwt = require('jsonwebtoken');
+
 const index = require('./routes/index')
 // const users = require('./routes/users') // routes\users-test.js
 
@@ -25,6 +28,12 @@ app.use(views(__dirname + '/views', {
 }))
 
 /**
+ * token相关
+ */
+app.use(token);
+
+
+/**
  * zhu：解决跨域问题
  */
  const cors = require('koa-cors')
@@ -36,8 +45,8 @@ app.use(views(__dirname + '/views', {
  * ！！！注意：使用的路由接口具有post请求需要放在bodyparser后面，否则无法req.body将为undefined！！！
  */
 // 添加学生接口请求
-const student = require('./routes/student')
-app.use(student.routes(), student.allowedMethods())
+// const student = require('./routes/student')
+// app.use(student.routes(), student.allowedMethods())
 
 // 用户登录接口
 const user = require('./routes/user')
