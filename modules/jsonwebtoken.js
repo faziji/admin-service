@@ -10,14 +10,13 @@ const {
 
 async function verify(ctx, next) {
   const whiteListUrl = {
+    // GET: ["/api/user/detail"],
     GET: [],
     POST: ["/api/user/login"],
   };
   const hasOneOf = (str, arr) => arr.some((item) => item.includes(str));
   let method = ctx.request.method;
   let path = ctx.request.path;
-
-  console.log('22222222222', path);
 
   let token = ctx.request.headers["authorization"];
 
@@ -26,17 +25,16 @@ async function verify(ctx, next) {
   } else if (!token) {
     throw new HttpException("no token");
   } else {
-    // try {
-    //   var decode = jwt.verify(token, "abcd");
-    // } catch (error) {
-    //   throw new Forbidden("口令无效");
-    // }
+    try {
+      var decode = jwt.verify(token, secretKey);
+    } catch (error) {
+      throw new Forbidden("口令无效");
+    }
     // ctx.state.role = decode.role;
     // ctx.state.username = decode.username;
-
     await next();
   }
-  console.log('333333333333', path);
+//   console.log('333333333333', path);
 
 
 //   await next();

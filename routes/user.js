@@ -14,7 +14,9 @@ router.prefix('/api/user')
 router.post('/create',UserController.create);
 // 用户登录
 router.post('/login',UserController.login);
-// 获取用户详情：根据username
+// 设置用户基本信息
+router.post('/baseSettings',UserController.baseSettings);
+// 直接获取用户信息
 router.get('/detail',UserController.detailByUsername);
 // 获取用户详情
 router.get('/detail/:id',UserController.detailById)
