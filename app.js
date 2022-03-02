@@ -5,6 +5,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const koaBody = require('koa-body')
 
 const token = require("./modules/jsonwebtoken")
 // const koaJwt = require('jsonwebtoken');
@@ -14,6 +15,16 @@ const index = require('./routes/index')
 
  // error handler
 onerror(app)
+
+
+/**
+ * 用于文件上传
+ * 接收post参数解析，写在路由和bodyparser的前面
+ */
+ app.use(koaBody({
+  multipart: true
+}))
+
 
 // middlewares
 app.use(bodyparser({
@@ -51,6 +62,7 @@ app.use(token);
 // 用户登录接口
 const user = require('./routes/user')
 app.use(user.routes(), user.allowedMethods())
+
 
 
 

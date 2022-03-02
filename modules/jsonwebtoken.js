@@ -12,7 +12,7 @@ async function verify(ctx, next) {
   const whiteListUrl = {
     // GET: ["/api/user/detail"],
     GET: [],
-    POST: ["/api/user/login"],
+    POST: ["/api/user/login", "/api/user/uploadFile"],
   };
   const hasOneOf = (str, arr) => arr.some((item) => item.includes(str));
   let method = ctx.request.method;

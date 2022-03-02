@@ -3,8 +3,10 @@
  * 控制器的主要作用为功能的处理，项目中controller目录下创建article.js，代码如下：
  */
 
-const {isEmptyObject} = require("../utils");
+const { isEmptyObject } = require("../utils");
 const jwt = require("jsonwebtoken");
+
+const fs = require("fs");
 const { secretKey, expiresIn } = require("../config/config").security;
 const UserModel = require("../modules/user");
 const {
@@ -95,7 +97,7 @@ class userController {
   static async detailByUsername(ctx) {
     let token = ctx.request.headers["authorization"];
     let decode = jwt.verify(token, "abcd");
-    let username = decode?.username
+    let username = decode?.username;
 
     if (username) {
       try {
@@ -124,25 +126,73 @@ class userController {
   static async baseSettings(ctx) {
     let token = ctx.request.headers["authorization"];
     let decode = jwt.verify(token, "abcd");
-    let username = decode?.username
+    let username = decode?.username;
 
     // ctx.request
-    let data = ctx.request.body
-    if(isEmptyObject(data)){
+    let data = ctx.request.body;
+    if (isEmptyObject(data)) {
       ctx.response.status = 400;
-      throw new ParameterException()
-    }else{
+      throw new ParameterException();
+    } else {
       try {
         let res = await UserModel.updateUserDetail(username, data);
         ctx.response.status = 200;
-        ctx.body = new Success(res)
+        ctx.body = new Success(res);
       } catch (error) {
         ctx.response.status = 500;
-        throw new HttpException("更新失败")
+        throw new HttpException("更新失败");
       }
     }
   }
 
+  /**
+   * 文件上传
+   * @param ctx
+   * @returns {Promise.<void>}
+   */
+  static async uploadFile(ctx) {
+    console.log("上传文件");
+    const { name, path: filePath, size, type } = ctx.request.files.avatar;
+    // ctx.body = {
+    //   name, // 文件名称
+    //   filePath, // 临时路径
+    //   size, // 文件大小
+    //   type, // 文件类型
+    // };
+    
+    // 创建可读流
+    const reader = fs.createReadStream(filePath);
+    // 读取的__dirname包含\controllers需要去除掉
+    let targetPath = `${__dirname.replace("\controllers","")}\\public\\upload\\${name}`;
+    // 创建可写流
+    console.log('111111111111111', targetPath);
+    const upStream = fs.createWriteStream(targetPath);
+    // 可读流通过管道写入可写流
+    reader.pipe(upStream);
+
+
+    ctx.response.status = 200;
+
+    // let token = ctx.request.headers["authorization"];
+    // let decode = jwt.verify(token, "abcd");
+    // let username = decode?.username
+
+    // // ctx.request
+    // let data = ctx.request.body
+    // if(isEmptyObject(data)){
+    //   ctx.response.status = 400;
+    //   throw new ParameterException()
+    // }else{
+    //   try {
+    //     let res = await UserModel.updateUserDetail(username, data);
+    //     ctx.response.status = 200;
+    //     ctx.body = new Success(res)
+    //   } catch (error) {
+    //     ctx.response.status = 500;
+    //     throw new HttpException("更新失败")
+    //   }
+    // }
+  }
 
   /**
    * 用户登录
@@ -169,8 +219,8 @@ class userController {
         ctx.response.status = 200;
         // 生成token
         let data = {
-          token:jwt.sign({ username }, secretKey, {
-            expiresIn
+          token: jwt.sign({ username }, secretKey, {
+            expiresIn,
           }),
         };
         ctx.body = new Success(data, "登录成功");

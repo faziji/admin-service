@@ -20,6 +20,7 @@ router.post('/baseSettings',UserController.baseSettings);
 router.get('/detail',UserController.detailByUsername);
 // 获取用户详情
 router.get('/detail/:id',UserController.detailById)
-
+// 上传图片
+router.post('/uploadFile', UserController.uploadFile)
 
 module.exports = router
