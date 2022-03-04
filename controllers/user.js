@@ -235,6 +235,16 @@ class userController {
       ctx.body = new HttpException();
     }
   }
+
+  /**
+   * 测试前台
+   * @param ctx
+   * @returns {Promise.<void>}
+   */
+  static async test(ctx) {
+    ctx.response.status = 200;
+    ctx.body = new Success("成功");
+  }
 }
 
 module.exports = userController;

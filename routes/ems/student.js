@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 // 学生
-const StudentController = require('../controllers/student');
+const StudentController = require('../../controllers/student');
  
 router.prefix('/api/student')
 /**

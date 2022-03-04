@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 // 学生
-const UserController = require('../controllers/user');
+const UserController = require('../../controllers/user');
  
 router.prefix('/api/user')
 /**
@@ -22,5 +22,9 @@ router.get('/detail',UserController.detailByUsername);
 router.get('/detail/:id',UserController.detailById)
 // 上传图片
 router.post('/uploadFile', UserController.uploadFile)
+
+
+// 测试前台
+router.get('/fontEnd', UserController.test)
 
 module.exports = router
