@@ -1,1 +1,0 @@
-const emsUser = require('./ems')

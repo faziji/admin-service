@@ -8,11 +8,7 @@ const {
   Forbidden,
 } = require("../core/http-exception");
 
-/**
- * 排除不需要使用token的接口
- * 1. /api/user/login登录接口
- * 2. /api/user/uploadFile上传头像接口（bug待修复）
- */
+
 async function verify(ctx, next) {
   // 管理系统的白名单列表设置
   const whiteListUrl = {
@@ -29,8 +25,11 @@ async function verify(ctx, next) {
 
   let token = ctx.request.headers["authorization"];
 
+  console.log('1111111111', path);
+
   if (
     path.includes(fontEndString) ||
+    path.includes("/favicon.ico") ||
     (whiteListUrl[method] && hasOneOf(path, whiteListUrl[method]))
   ) {
     await next();
@@ -42,33 +41,8 @@ async function verify(ctx, next) {
     } catch (error) {
       throw new Forbidden("口令无效");
     }
-    // ctx.state.role = decode.role;
-    // ctx.state.username = decode.username;
     await next();
   }
-  //   console.log('333333333333', path);
-
-  //   await next();
-
-  // console.log('1111111111111', secretKey);
-  // if(authorization){
-  //     let token = authorization.split(" ")[1];
-  //     let payload = jwt.verify(token,secretKey,(error,decoded)=>{
-  //         if(error){
-  //             ctx.body = {
-  //                 status:-1,
-  //                 msg:"登陆失效"
-  //             };
-  //         }
-  //         else{
-  //             ctx.token_data = decoded;
-  //             return next();
-  //         }
-  //     });
-  // }
-  // else{
-  //     return next();
-  // }
 }
 
 module.exports = verify;
