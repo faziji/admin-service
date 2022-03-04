@@ -8,6 +8,11 @@ const {
     Forbidden,
   } = require("../core/http-exception");
 
+/**
+ * 排除不需要使用token的接口
+ * 1. /api/user/login登录接口
+ * 2. /api/user/uploadFile上传头像接口（bug待修复）
+ */
 async function verify(ctx, next) {
   const whiteListUrl = {
     // GET: ["/api/user/detail"],
@@ -22,7 +27,8 @@ async function verify(ctx, next) {
 
   if (whiteListUrl[method] && hasOneOf(path, whiteListUrl[method])) {
     await next();
-  } else if (!token) {
+  } 
+  else if (!token) {
     throw new HttpException("no token");
   } else {
     try {

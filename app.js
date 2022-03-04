@@ -6,6 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const koaBody = require('koa-body')
+const serve = require('koa-static');
 
 const token = require("./modules/jsonwebtoken")
 // const koaJwt = require('jsonwebtoken');
@@ -49,7 +50,6 @@ app.use(token);
  */
  const cors = require('koa-cors')
  app.use(cors()) //使用cors
-
 
 /**
  * zhu：添加路由接口

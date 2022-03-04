@@ -71,14 +71,14 @@ class userController {
    */
   static async detailById(ctx) {
     // 根据用户id查询
-    let id = ctx.params.id;
+    const id = ctx.params.id;
 
     if (id) {
       try {
         // 查询用户信息详情模型
-        let data = await UserModel.getUserDetailById(id);
-        ctx.response.status = 200;
+        const data = await UserModel.getUserDetailById(id);
         ctx.body = new Success(data);
+        ctx.response.status = 200;
       } catch (err) {
         ctx.response.status = 500;
         ctx.body = new HttpException();
@@ -151,47 +151,50 @@ class userController {
    * @returns {Promise.<void>}
    */
   static async uploadFile(ctx) {
-    console.log("上传文件");
-    const { name, path: filePath, size, type } = ctx.request.files.avatar;
-    // ctx.body = {
-    //   name, // 文件名称
-    //   filePath, // 临时路径
-    //   size, // 文件大小
-    //   type, // 文件类型
-    // };
-    
+    console.log("上传文件", ctx.request.files.file);
+    const { name, path: filePath, size, type } = ctx.request.files.file;
+
+    // 上传文件为空
+    if (!ctx.request.files.file) throw new ParameterException("上传文件为空");
+
+    /**
+     * 以下是读取文件和写入文件的代码
+     */
     // 创建可读流
     const reader = fs.createReadStream(filePath);
     // 读取的__dirname包含\controllers需要去除掉
-    let targetPath = `${__dirname.replace("\controllers","")}\\public\\upload\\${name}`;
+    let targetPath = `${__dirname.replace(
+      "controllers",
+      ""
+    )}\\public\\upload\\${name}`;
     // 创建可写流
-    console.log('111111111111111', targetPath);
     const upStream = fs.createWriteStream(targetPath);
     // 可读流通过管道写入可写流
     reader.pipe(upStream);
 
+    // 通过token获取username // 待优化
+    let { username } = ctx.request.body;
 
-    ctx.response.status = 200;
-
-    // let token = ctx.request.headers["authorization"];
-    // let decode = jwt.verify(token, "abcd");
-    // let username = decode?.username
-
-    // // ctx.request
-    // let data = ctx.request.body
-    // if(isEmptyObject(data)){
-    //   ctx.response.status = 400;
-    //   throw new ParameterException()
-    // }else{
-    //   try {
-    //     let res = await UserModel.updateUserDetail(username, data);
-    //     ctx.response.status = 200;
-    //     ctx.body = new Success(res)
-    //   } catch (error) {
-    //     ctx.response.status = 500;
-    //     throw new HttpException("更新失败")
-    //   }
-    // }
+    // 更新数据中的相对地址 /upload/${name}
+    try {
+      let avatar = `http://localhost:3000/upload/${name}`;
+      await UserModel.updateUserDetail(username, { avatar });
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        {
+          name, // 文件名称
+          filePath, // 临时路径
+          targetPath, // 服务器存储地址
+          size, // 文件大小
+          type, // 文件类型
+          avatar, // 服务器资源的相对地址
+        },
+        "上传成功！"
+      );
+    } catch (error) {
+      ctx.response.status = 500;
+      throw new HttpException("更新失败");
+    }
   }
 
   /**
