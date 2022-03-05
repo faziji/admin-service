@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+// const koaStatic = require("koa-static"); // move app.js:sometime error
 const onerror = require("koa-onerror");
 const koaBody = require("koa-body");
 const json = require("koa-json");
@@ -7,7 +8,6 @@ const bodyparser = require("koa-bodyparser");
 const views = require("koa-views");
 const cors = require("koa-cors");
 const router = require("koa-router");
-const koaStatic = require("koa-static");
 
 // init local routes
 const initLocalRouters = require("../routes");
@@ -55,7 +55,8 @@ class InitManager {
       ) {
         await next();
       } else if (!token) {
-        throw new global.errs.HttpException("no token");
+        ctx.response.status = 401
+        ctx.body = new global.errs.Forbidden("no token")
       } else {
         try {
           var decode = jwt.verify(token, secretKey);
@@ -74,6 +75,7 @@ class InitManager {
     const config = require(configPath);
     global.config = config;
   }
+  // div handle error
   static loadHttpException() {
     const errors = require("./http-exception");
     global.errs = errors;
@@ -84,14 +86,15 @@ class InitManager {
     InitManager.app.use(router.allowedMethods());
   }
 
+
   // 初始化koa2框架基础配置
   static initBaseConfig(app) {
 
     // koa-static
-    app.use(koaStatic(__dirname + "/public"));
+    // app.use(koaStatic(__dirname + "/public"));
 
     // error handler
-    onerror(app);
+    // onerror(app);
 
     //  文件处理：接收post参数解析，写在路由和bodyparser的前面
     app.use(

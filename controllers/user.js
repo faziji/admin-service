@@ -47,8 +47,7 @@ class userController {
         return;
       }
     } catch (error) {
-      ctx.response.status = 500;
-      ctx.body = new HttpException();
+      throw new HttpException();
     }
 
     try {
@@ -59,8 +58,7 @@ class userController {
       ctx.response.status = 200;
       ctx.body = new Success(data, "注册用户成功");
     } catch (err) {
-      ctx.response.status = 500;
-      ctx.body = new HttpException();
+      throw new HttpException(err);
     }
   }
 
@@ -80,8 +78,7 @@ class userController {
         ctx.body = new Success(data);
         ctx.response.status = 200;
       } catch (err) {
-        ctx.response.status = 500;
-        ctx.body = new HttpException();
+        throw new HttpException();
       }
     } else {
       ctx.response.status = 400;
@@ -109,8 +106,7 @@ class userController {
         ctx.response.status = 200;
         ctx.body = new Success(data);
       } catch (err) {
-        ctx.response.status = 500;
-        ctx.body = new HttpException();
+        throw new HttpException();
       }
     } else {
       ctx.response.status = 400;
@@ -132,12 +128,12 @@ class userController {
     let data = ctx.request.body;
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
-      throw new ParameterException();
+      ctx.body = new ParameterException();
     } else {
       try {
         let res = await UserModel.updateUserDetail(username, data);
         ctx.response.status = 200;
-        ctx.body = new Success(res);
+        ctx.body = new global.errs.Success(res);
       } catch (error) {
         ctx.response.status = 500;
         throw new HttpException("更新失败");
@@ -192,7 +188,6 @@ class userController {
         "上传成功！"
       );
     } catch (error) {
-      ctx.response.status = 500;
       throw new HttpException("更新失败");
     }
   }
@@ -231,8 +226,7 @@ class userController {
         ctx.body = new Forbidden("账号或密码错误");
       }
     } catch (err) {
-      ctx.response.status = 500;
-      ctx.body = new HttpException();
+      throw new HttpException();
     }
   }
 

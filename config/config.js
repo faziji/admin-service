@@ -11,6 +11,6 @@ module.exports = {
     },
     security: {
       secretKey: 'abcd',//用来生成token的key值
-      expiresIn: 60 * 60//过期时间
+      expiresIn: 60 * 60 * 1000000 //过期时间, 相当于不会过期
     }
 }
