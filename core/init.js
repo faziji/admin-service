@@ -8,6 +8,7 @@ const bodyparser = require("koa-bodyparser");
 const views = require("koa-views");
 const cors = require("koa-cors");
 const router = require("koa-router");
+const { getToken } = require("../utils");
 
 // init local routes
 const initLocalRouters = require("../routes");
@@ -45,8 +46,9 @@ class InitManager {
       const hasOneOf = (str, arr) => arr.some((item) => item.includes(str));
       let method = ctx.request.method;
       let path = ctx.request.path;
-      let token = ctx.request.headers["authorization"];
+      let token = getToken(ctx);
 
+      // api地址包含以下几个字段时无需验证token
       if (
         path.includes("/fontEnd") ||
         path.includes("/upload") || // bug
@@ -55,8 +57,8 @@ class InitManager {
       ) {
         await next();
       } else if (!token) {
-        ctx.response.status = 401
-        ctx.body = new global.errs.Forbidden("no token")
+        ctx.response.status = 401;
+        ctx.body = new global.errs.Forbidden("no token");
       } else {
         try {
           var decode = jwt.verify(token, secretKey);
@@ -68,7 +70,6 @@ class InitManager {
     });
   }
 
-  
   // 现在通过全局的global变量中就可以取到当前的环境啦
   static loadConfig() {
     const configPath = process.cwd() + "/config/config.js";
@@ -86,10 +87,8 @@ class InitManager {
     InitManager.app.use(router.allowedMethods());
   }
 
-
   // 初始化koa2框架基础配置
   static initBaseConfig(app) {
-
     // koa-static
     // app.use(koaStatic(__dirname + "/public"));
 

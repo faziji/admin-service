@@ -12,6 +12,6 @@ router.prefix('/api/fontEnd/user')
 
 
 // 测试前台
-router.get('/test', UserController.test)
+router.get('/currentUser', UserController.currentUser)
 
 module.exports = router

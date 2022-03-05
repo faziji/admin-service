@@ -25,6 +25,6 @@ router.post('/uploadFile', UserController.uploadFile)
 
 
 // 测试前台
-router.get('/fontEnd', UserController.test)
+// router.get('/fontEnd', UserController.test)
 
 module.exports = router

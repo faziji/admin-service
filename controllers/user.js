@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { secretKey, expiresIn } = require("../config/config").security;
 const UserModel = require("../modules/user");
+const { getToken } = require('../utils')
 const {
   ParameterException,
   DatabaseNotFoundException,
@@ -231,13 +232,21 @@ class userController {
   }
 
   /**
-   * 测试前台
+   * 前台中心：验证身份
    * @param ctx
    * @returns {Promise.<void>}
    */
-  static async test(ctx) {
-    ctx.response.status = 200;
-    ctx.body = new Success("成功");
+  static async currentUser(ctx) {
+    let token = getToken(ctx)
+    if(!token) {
+      ctx.response.status = 200;
+      ctx.body = new Success("noLoginUser");
+    }else{
+      ctx.response.status = 400;
+      ctx.body = new ParameterException("需要验证账号");
+      console.log('需要验证账号');
+    }
+
   }
 }
 
