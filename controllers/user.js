@@ -5,11 +5,13 @@
 
 const { isEmptyObject } = require("../utils");
 const jwt = require("jsonwebtoken");
+// 返回文件地址的时候链接此地址
+const { url } = require("./../config/config").qiniu;
 
 const fs = require("fs");
 const { secretKey, expiresIn } = require("../config/config").security;
 const UserModel = require("../modules/user");
-const { getToken } = require('../utils')
+const { getToken } = require("../utils");
 const {
   ParameterException,
   DatabaseNotFoundException,
@@ -26,7 +28,7 @@ class userController {
    */
   static async create(ctx) {
     //接收客服端
-    let req = ctx.request.body;
+    let req = ctx.request.body || {};
     if (!req.username) {
       ctx.response.status = 400;
       ctx.body = new ParameterException("账号不能为空");
@@ -76,6 +78,8 @@ class userController {
       try {
         // 查询用户信息详情模型
         const data = await UserModel.getUserDetailById(id);
+        data["avatar"] = url + data["avatar"]; // 链接静态资源地址
+
         ctx.body = new Success(data);
         ctx.response.status = 200;
       } catch (err) {
@@ -103,6 +107,7 @@ class userController {
         let data = await UserModel.getUserDetailByUsername(username);
         // 删除密码返回
         delete data["dataValues"].password; // 一定要这样删除才可
+        data["avatar"] = url + data["avatar"]; // 链接静态资源地址
 
         ctx.response.status = 200;
         ctx.body = new Success(data);
@@ -130,6 +135,7 @@ class userController {
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
       ctx.body = new ParameterException();
+      return;
     } else {
       try {
         let res = await UserModel.updateUserDetail(username, data);
@@ -143,7 +149,7 @@ class userController {
   }
 
   /**
-   * 文件上传
+   * 文件上传：存在到服务器，/public文件夹下
    * @param ctx
    * @returns {Promise.<void>}
    */
@@ -237,16 +243,15 @@ class userController {
    * @returns {Promise.<void>}
    */
   static async currentUser(ctx) {
-    let token = getToken(ctx)
-    if(!token) {
+    let token = getToken(ctx);
+    if (!token) {
       ctx.response.status = 200;
       ctx.body = new Success("noLoginUser");
-    }else{
+    } else {
       ctx.response.status = 400;
       ctx.body = new ParameterException("需要验证账号");
-      console.log('需要验证账号');
+      console.log("需要验证账号");
     }
-
   }
 }
 
