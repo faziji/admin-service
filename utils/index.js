@@ -9,7 +9,7 @@ function isEmptyObject(data) {
  * 获取token
  */
 function getToken(ctx) {
-  return ctx.request.headers["authorization"];
+  return ctx.request.headers["authorization"] || ctx.request.body["token"];
 }
 
 module.exports = {

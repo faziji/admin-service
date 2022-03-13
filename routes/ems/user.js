@@ -23,7 +23,7 @@ router.get('/detail',UserController.detailByUsername);
 router.get('/detail/:id',UserController.detailById)
 // 上传图片
 router.post('/uploadFile', UserController.uploadFile)
-router.post('/uploadFile2', UploadController.uploadFile2)
+router.post('/uploadAvatar', UploadController.uploadAvatar)
 
 
 // 测试前台
