@@ -11,13 +11,13 @@
              allowNull: true,
              autoIncrement: true
          },
-         //学生姓名
+         //姓名
          username:{
              type: DataTypes.STRING,
              allowNull: false,
              field: 'username'
          },
-         //年龄
+         //密码
          password:{
              type: DataTypes.INTEGER,
              allowNull: false,

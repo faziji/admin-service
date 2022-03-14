@@ -11,7 +11,7 @@ const { url } = require("./../config/config").qiniu;
 const fs = require("fs");
 const { secretKey, expiresIn } = require("../config/config").security;
 const UserModel = require("../modules/user");
-const { getToken } = require("../utils");
+const { getToken, getDecodeInfo } = require("../utils");
 const {
   ParameterException,
   DatabaseNotFoundException,
@@ -92,14 +92,15 @@ class userController {
   }
 
   /**
-   * 获取用户详情：根据用户传参username查询
+   * 获取用户详情：服务器查询ctx仅表示一个值 || 通过query查询 || 获取本人
    * @param ctx
    * @returns {Promise.<void>}
    */
   static async detailByUsername(ctx) {
-    let token = ctx.request.headers["authorization"];
-    let decode = jwt.verify(token, "abcd");
-    let username = decode?.username;
+    // 通过query查询
+    const queryUsername = ctx.query?.username;
+    //  通过query查询(测试后门) || 获取本人
+    let username = queryUsername || getDecodeInfo(ctx)?.username;
 
     if (username) {
       try {
@@ -126,10 +127,6 @@ class userController {
    * @returns {Promise.<void>}
    */
   static async baseSettings(ctx) {
-    let token = ctx.request.headers["authorization"];
-    let decode = jwt.verify(token, "abcd");
-    let username = decode?.username;
-
     // ctx.request
     let data = ctx.request.body;
     if (isEmptyObject(data)) {
@@ -138,7 +135,10 @@ class userController {
       return;
     } else {
       try {
-        let res = await UserModel.updateUserDetail(username, data);
+        let res = await UserModel.updateUserDetail(
+          getDecodeInfo(ctx)?.username,
+          data
+        );
         ctx.response.status = 200;
         ctx.body = new global.errs.Success(res);
       } catch (error) {

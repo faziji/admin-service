@@ -26,7 +26,4 @@ router.post('/uploadFile', UserController.uploadFile)
 router.post('/uploadAvatar', UploadController.uploadAvatar)
 
 
-// 测试前台
-// router.get('/fontEnd', UserController.test)
-
 module.exports = router
