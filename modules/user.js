@@ -28,10 +28,7 @@ class userModel {
    * @returns {Promise<*>}
    */
   static async createUser(data) {
-    return await user.create({
-      username: data.username, // 账户
-      password: data.password, //密码
-    });
+    return await user.create(data);
   }
 
   /**
