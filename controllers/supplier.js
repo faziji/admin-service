@@ -105,6 +105,7 @@ class SupplierController {
   static async updateSupplierDetail(ctx) {
     // ctx.request
     let data = ctx.request.body;
+    console.log('提交的数据是', data);
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
       ctx.body = new ParameterException();
@@ -131,6 +132,11 @@ class SupplierController {
   static async getSupplierList(ctx) {
     try {
       const reqData = ctx.query;
+
+      // 删除分页
+      delete reqData['current']
+      delete reqData['pageSize']
+
       // 过滤所有空元素
       for (let item in reqData) {
         if (!reqData[item]) {
@@ -145,7 +151,7 @@ class SupplierController {
         "获取列表成功"
       );
     } catch (error) {
-      throw new HttpException(err);
+      throw new HttpException(error);
     }
   }
 

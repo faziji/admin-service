@@ -66,6 +66,18 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         field: "note",
       },
+      // 0审核人
+      reviewer: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "reviewer",
+      },
+      // 0审核信息：不通过反馈
+      reviewInfo: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "reviewInfo",
+      },
       // 0用户头像
       avatar: {
         type: DataTypes.STRING,
@@ -80,6 +92,7 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: "enable",
         field: "status",
       },
+
       // 0评分
       score: {
         type: DataTypes.INTEGER,
