@@ -76,6 +76,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         field: "email",
       },
+      //  备注
+      note: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "note",
+      },
       // 电话号码
       phone: {
         type: DataTypes.STRING,

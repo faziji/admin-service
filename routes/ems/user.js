@@ -21,6 +21,9 @@ router.post('/baseSettings',UserController.baseSettings);
 router.get('/detail',UserController.detailByUsername);
 // 获取用户详情
 router.get('/detail/:id',UserController.detailById)
+// 获取用户列表
+router.get('/getUserList',UserController.getUserList);
+
 // 上传图片
 router.post('/uploadFile', UserController.uploadFile)
 router.post('/uploadAvatar', UploadController.uploadAvatar)

@@ -129,6 +129,7 @@ class userController {
   static async baseSettings(ctx) {
     // ctx.request
     let data = ctx.request.body;
+    console.log('提交的数据是',data);
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
       ctx.body = new ParameterException();
@@ -136,7 +137,7 @@ class userController {
     } else {
       try {
         let res = await UserModel.updateUserDetail(
-          getDecodeInfo(ctx)?.username,
+          data.username || getDecodeInfo(ctx)?.username,
           data
         );
         ctx.response.status = 200;
@@ -251,6 +252,37 @@ class userController {
       ctx.response.status = 400;
       ctx.body = new ParameterException("需要验证账号");
       console.log("需要验证账号");
+    }
+  }
+
+  /**
+   * 获取用户列表
+   * @param ctx
+   * @return 用户列表
+   */
+  static async getUserList(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await UserModel.getUserList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取征询意见列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
     }
   }
 }
