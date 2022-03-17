@@ -92,7 +92,6 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: "enable",
         field: "status",
       },
-
       // 0评分
       score: {
         type: DataTypes.INTEGER,

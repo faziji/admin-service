@@ -82,6 +82,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         field: "note",
       },
+      // 0信息录入员
+      builder: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "builder",
+      },
       // 电话号码
       phone: {
         type: DataTypes.STRING,
