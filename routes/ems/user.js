@@ -8,7 +8,7 @@ router.prefix('/api/user')
  * 用户接口
  */
  router.get('/', async (ctx, next) => {
-    ctx.body = 'currecurrentUsercurrentUserntUser1'
+    ctx.body = 'user'
   })
 
 // 注册用户

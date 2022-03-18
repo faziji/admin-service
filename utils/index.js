@@ -11,22 +11,21 @@ function isEmptyObject(data) {
 /**
  * 获取token
  */
-function getToken(ctx) {
+function getToken(ctx = {}) {
   return ctx.request.headers["authorization"] || ctx.request.body["token"];
 }
 
 /**
  * 获取解码后的信息
  */
- function getDecodeInfo(ctx) {
-  let token = ctx.request.headers["authorization"];
-  let decode = jwt.verify(token, secretKey);
+function getDecodeInfo(ctx) {
+  let token = ctx?.request?.headers["authorization"] || "";
+  let decode = jwt?.verify(token, secretKey);
   return decode;
 }
-
 
 module.exports = {
   isEmptyObject,
   getToken,
-  getDecodeInfo
+  getDecodeInfo,
 };

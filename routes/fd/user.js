@@ -7,11 +7,14 @@ router.prefix('/api/fontEnd/user')
  * 测试接口
  */
  router.get('/', async (ctx, next) => {
-    ctx.body = 'currecurrentUsercurrentUserntUser1'
+    ctx.body = 'user'
   })
 
 
-// 测试前台
-router.get('/currentUser', UserController.currentUser)
+// 登录
+router.post('/login', UserController.fdLogin)
+
+// 获取用户信息
+router.post('/currentUser', UserController.currentUser)
 
 module.exports = router

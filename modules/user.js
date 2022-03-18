@@ -94,18 +94,16 @@ class userModel {
     });
   }
 
-    /**
+  /**
    * 获取用户列表
    * @returns {Promise<*>}
    */
-     static async getUserList(data) {
-      return await user.findAll({
-        where: data,
-      });
-    }
+  static async getUserList(data) {
+    return await user.findAll({
+      where: data,
+    });
+  }
 
-
-  // getUserList
 }
 
 module.exports = userModel;

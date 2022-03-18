@@ -11,6 +11,9 @@ const { url } = require("./../config/config").qiniu;
 const fs = require("fs");
 const { secretKey, expiresIn } = require("../config/config").security;
 const UserModel = require("../modules/user");
+// 只用于前台
+const SupplierModel = require("../modules/supplier");
+
 const { getToken, getDecodeInfo } = require("../utils");
 const {
   ParameterException,
@@ -129,7 +132,7 @@ class userController {
   static async baseSettings(ctx) {
     // ctx.request
     let data = ctx.request.body;
-    console.log('提交的数据是',data);
+    console.log("提交的数据是", data);
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
       ctx.body = new ParameterException();
@@ -239,23 +242,6 @@ class userController {
   }
 
   /**
-   * 前台中心：验证身份
-   * @param ctx
-   * @returns {Promise.<void>}
-   */
-  static async currentUser(ctx) {
-    let token = getToken(ctx);
-    if (!token) {
-      ctx.response.status = 200;
-      ctx.body = new Success("noLoginUser");
-    } else {
-      ctx.response.status = 400;
-      ctx.body = new ParameterException("需要验证账号");
-      console.log("需要验证账号");
-    }
-  }
-
-  /**
    * 获取用户列表
    * @param ctx
    * @return 用户列表
@@ -283,6 +269,79 @@ class userController {
       );
     } catch (err) {
       throw new HttpException(err);
+    }
+  }
+
+  // =====================前台中心=============================
+  /**
+   * 前台中心：验证身份
+   * @param ctx
+   * @returns {Promise.<void>}
+   */
+  static async currentUser(ctx) {
+    let token = getToken(ctx);
+    if (token) {
+      let { username } = getDecodeInfo(ctx);
+      try {
+        console.log("1111111请求的用户为", username);
+        const res = await SupplierModel.getSupplierDetail({ username });
+        console.log("2222222请求的结果res", res);
+      } catch (error) {
+        console.log("查询数据库失败");
+        throw new HttpException("查询数据库用户失败");
+      }
+    } else {
+      ctx.response.status = 200;
+      ctx.body = new Success("noLoginUser");
+    }
+  }
+
+  /**
+   * 前台中心：登录
+   * @param ctx
+   * @returns {Promise.<void>}
+   */
+  static async fdLogin(ctx) {
+    let { username, password } = ctx.request.body;
+    if (!username) {
+      ctx.response.status = 400;
+      ctx.body = new ParameterException("账号不能为空");
+      return;
+    }
+    if (!password) {
+      ctx.response.status = 400;
+      ctx.body = new ParameterException("密码不能为空");
+      return;
+    }
+    try {
+      // let res = SupplierModel.checkSupplierLogin(username, password);
+      console.log('111111111111', username, password);
+      
+      let resUsername = await SupplierModel.getSupplierDetail({username});
+      if(!resUsername){
+        ctx.response.status = 200;
+        ctx.body = new Success(resUsername, "账号不存在");
+        return;
+      }
+
+      let resData = await SupplierModel.getSupplierDetail({username, password})
+      console.log('getSupplierDetail(username,password)', resData);
+
+      if (!!resData) {
+        // 生成token
+        let data = {
+          token: jwt.sign({ username }, secretKey, {
+            expiresIn,
+          }),
+        };
+        ctx.response.status = 200;
+        ctx.body = new Success(data, "登录成功");
+      } else {
+        ctx.response.status = 200;
+        ctx.body = new Forbidden("账号或密码错误");
+      }
+    } catch (error) {
+      throw new HttpException(error);
     }
   }
 }

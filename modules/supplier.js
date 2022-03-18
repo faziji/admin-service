@@ -36,6 +36,7 @@ class SupplierModel {
    * @returns {Promise<Model>}
    */
   static async getSupplierDetail(data) {
+    console.log('222222222222222', data);
     return await supplier.findOne({
       where: data,
     });
@@ -73,7 +74,22 @@ class SupplierModel {
     });
   }
 
-  //   deleteSupplier
+    /**
+   * 用户登录
+   * @param username 账号；password 密码
+   * @returns {Promise<Model>}
+   */
+     static async checkSupplierLogin(username, password) {
+      return await supplier.findOne({
+        where: {
+          username,
+          password,
+        },
+      });
+    }
+
 }
+
+
 
 module.exports = SupplierModel;
