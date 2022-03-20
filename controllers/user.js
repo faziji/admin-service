@@ -279,13 +279,15 @@ class userController {
    * @returns {Promise.<void>}
    */
   static async currentUser(ctx) {
+    console.log("调用currentUser");
     let token = getToken(ctx);
     if (token) {
       let { username } = getDecodeInfo(ctx);
       try {
-        console.log("1111111请求的用户为", username);
         const res = await SupplierModel.getSupplierDetail({ username });
-        console.log("2222222请求的结果res", res);
+        res["avatar"] = url + res["avatar"];
+        ctx.response.status = 200;
+        ctx.body = new Success(res, "获取用户信息成功");
       } catch (error) {
         console.log("查询数据库失败");
         throw new HttpException("查询数据库用户失败");
@@ -314,18 +316,18 @@ class userController {
       return;
     }
     try {
-      // let res = SupplierModel.checkSupplierLogin(username, password);
-      console.log('111111111111', username, password);
-      
-      let resUsername = await SupplierModel.getSupplierDetail({username});
-      if(!resUsername){
+      let resUsername = await SupplierModel.getSupplierDetail({ username });
+      if (!resUsername) {
         ctx.response.status = 200;
-        ctx.body = new Success(resUsername, "账号不存在");
+        ctx.body = new DatabaseNotFoundException("该账号不存在");
         return;
       }
 
-      let resData = await SupplierModel.getSupplierDetail({username, password})
-      console.log('getSupplierDetail(username,password)', resData);
+      let resData = await SupplierModel.getSupplierDetail({
+        username,
+        password,
+      });
+      console.log("getSupplierDetail(username,password)", resData);
 
       if (!!resData) {
         // 生成token

@@ -15,6 +15,6 @@ router.prefix('/api/fontEnd/user')
 router.post('/login', UserController.fdLogin)
 
 // 获取用户信息
-router.post('/currentUser', UserController.currentUser)
+router.get('/currentUser', UserController.currentUser)
 
 module.exports = router

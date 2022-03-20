@@ -48,9 +48,11 @@ class InitManager {
       let path = ctx.request.path;
       let token = getToken(ctx);
 
-      
+      let referer = ctx.request.header.referer
+
       // api地址包含以下几个字段时无需验证token
       if (
+        referer.includes("/welcome") ||
         path.includes("/fontEnd") ||
         path.includes("/upload") || // bug
         path.includes("/files") || // bug
