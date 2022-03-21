@@ -46,7 +46,7 @@ class SupplierController {
         username: req.username,
       });
       if (res) {
-        ctx.response.status = 400;
+        ctx.response.status = 200;
         ctx.body = new ParameterException("该账户已存在");
         return;
       }
@@ -56,10 +56,13 @@ class SupplierController {
 
     try {
       //创建用户信息模型
-      const ret = await SupplierModel.createSupplier(req);
+      await SupplierModel.createSupplier(req);
+      const ret = await SupplierModel.getSupplierDetail({
+        username: req.username,
+      });
 
       ctx.response.status = 200;
-      ctx.body = new Success(ret, "注册成功");
+      ctx.body = new Success(ret, "提交申请成功，待管理审核！");
     } catch (err) {
       throw new HttpException(err);
     }
@@ -105,7 +108,7 @@ class SupplierController {
   static async updateSupplierDetail(ctx) {
     // ctx.request
     let data = ctx.request.body;
-    console.log('提交的数据是', data);
+    console.log("提交的数据是", data);
     if (isEmptyObject(data)) {
       ctx.response.status = 400;
       ctx.body = new ParameterException();
@@ -134,8 +137,8 @@ class SupplierController {
       const reqData = ctx.query;
 
       // 删除分页
-      delete reqData['current']
-      delete reqData['pageSize']
+      delete reqData["current"];
+      delete reqData["pageSize"];
 
       // 过滤所有空元素
       for (let item in reqData) {

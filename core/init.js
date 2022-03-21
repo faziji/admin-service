@@ -52,7 +52,11 @@ class InitManager {
 
       // api地址包含以下几个字段时无需验证token
       if (
+        // 兼容前台 => 待优化
         referer.includes("/welcome") ||
+        referer.includes("/register") ||
+
+
         path.includes("/fontEnd") ||
         path.includes("/upload") || // bug
         path.includes("/files") || // bug
