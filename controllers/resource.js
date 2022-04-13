@@ -462,6 +462,7 @@ class resourceController {
   static async detailResultAnnouncement(ctx) {
     let { id } = ctx.query;
     if (!id) throw new ParameterException("id不能为空");
+    console.log('11111111111111');
 
     // 获取操作
     try {

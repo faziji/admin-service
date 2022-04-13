@@ -3,6 +3,8 @@ const emsResource = require("./ems/resource");
 const emsSupplier = require("./ems/supplier");
 
 const fdUser = require("./fd/user");
+const fdResource = require("./fd/resource");
+
 
 class initLocalRouters {
   static initRouters(app){
@@ -11,6 +13,8 @@ class initLocalRouters {
     app.use(emsSupplier.routes(), emsSupplier.allowedMethods());
 
     app.use(fdUser.routes(), fdUser.allowedMethods());
+    app.use(fdResource.routes(), fdResource.allowedMethods());
+
 
   }
 }
