@@ -57,7 +57,7 @@ class InitManager {
         referer.includes("/register") ||
 
 
-        path.includes("/fontEnd") ||
+        path.includes("/fontEnd") || // 适配前端的绝大部分请求无需验证token
         path.includes("/upload") || // bug
         path.includes("/files") || // bug
         path.includes("/favicon.ico") || // 加载public文件夹内容不需token
