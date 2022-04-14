@@ -1,8 +1,6 @@
 /**
  * 招标
  */
-
-const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
     "tender",
@@ -13,79 +11,29 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         autoIncrement: true,
       },
-      //意见名称
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "name",
+      //公告编号
+      announcementId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "announcementId",
       },
-      //描述
-      description: {
+      //供应商ID
+      supplierId: {
         type: DataTypes.STRING,
         allowNull: true,
         field: "description",
       },
-      //发布时间
-      publishTime: {
-        type: DataTypes.STRING,
+      // 投标金额
+      amount: {
+        type: DataTypes.INTEGER,
         allowNull: true,
-        field: "publishTime",
-      },
-      //开始时间
-      startTime: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "startTime",
-      },
-      //结束时间
-      endTime: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "endTime",
-      },
-      //状态： 0:未发布 1:正常 2:已结束 3:已终止
-      status: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-        field: "status",
-      },
-      //发布人
-      publisher: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "publisher",
-      },
-      // 资源哈希码
-      hash: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "hash",
-      },
-      // 资源key值
-      key: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "key",
-      },
-      // 阅读次数
-      viewTime: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-        field: "viewTime",
+        field: "amount",
       },
       // 附件
       attachment: {
         type: DataTypes.STRING,
         allowNull: true,
         field: "attachment",
-      },
-      // 关联公示
-      association: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "association",
       },
       // 创建时间
       createdAt: {
