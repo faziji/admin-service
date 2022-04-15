@@ -17,11 +17,23 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         field: "announcementId",
       },
-      //供应商ID
-      supplierId: {
+      //公告名称
+      announcementName: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "description",
+        field: "announcementName",
+      },
+      //供应商账号
+      supplierUsername: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "supplierUsername",
+      },
+      //供应商姓名
+      supplierName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "supplierName",
       },
       // 投标金额
       amount: {

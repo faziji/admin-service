@@ -10,12 +10,23 @@ tender.sync({ force: true }); // 自动创建表
 
 class TenderModel {
   /**
-   * 创建模型
+   * 投标
    * @param data
    * @returns {Promise<*>}
    */
   static async createTender(data) {
     return await tender.create(data);
   }
+
+   /**
+   * 获取项目投标记录
+   * @param data
+   * @returns {Promise<*>}
+   */
+    static async getTenderList(data) {
+      return await tender.findAll({
+        where: data,
+      });
+    }
 }
 module.exports = TenderModel;

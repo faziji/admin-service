@@ -20,7 +20,7 @@ router.get("/", async (ctx, next) => {
  const TenderController = require("../../controllers/tender");
 
 // 获取投标详情
-// router.get("/getTenderList", ResourceController.getTenderList);
+router.get("/getTenderList", TenderController.getTenderList);
 
 // 投标报名
 router.post("/createTender", TenderController.createTender);
