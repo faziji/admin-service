@@ -23,7 +23,7 @@ class tenderController {
       });
 
       ctx.response.status = 200;
-      ctx.body = new Success(data, "获取政策法规成功");
+      ctx.body = new Success(data, "获取投标列表成功");
     } catch (error) {
       throw new HttpException(error);
     }

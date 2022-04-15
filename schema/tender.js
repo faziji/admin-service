@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: true,
+        allowNull: false,
         autoIncrement: true,
       },
       //公告编号
