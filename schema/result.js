@@ -11,6 +11,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         autoIncrement: true,
       },
+      //成交结果名称
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "name",
+      },
       //公告编号
       announcementId: {
         type: DataTypes.INTEGER,
