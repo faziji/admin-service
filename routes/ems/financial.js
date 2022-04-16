@@ -29,6 +29,6 @@ router.post("/createContract", FinancialController.createContract);
 router.post("/createInvoice", FinancialController.createInvoice);
 
 // 获取合同列表
-router.get("/getInvoicetList", FinancialController.getInvoiceList);
+router.get("/getInvoiceList", FinancialController.getInvoiceList);
 
 module.exports = router;

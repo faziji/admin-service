@@ -25,4 +25,10 @@ router.get("/getTenderList", TenderController.getTenderList);
 // 投标报名
 router.post("/createTender", TenderController.createTender);
 
+// 结算获取成交结果
+router.post("/createResult", TenderController.createResult);
+// 获取成交结果
+router.get("/getResultList", TenderController.getResultList);
+
+
 module.exports = router;

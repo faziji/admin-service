@@ -11,7 +11,7 @@ contract.sync({ force: false }); // 自动创建表
 
 // 发票
 const invoice = Sequelize.import("../schema/invoice");
-invoice.sync({ force: false }); // 自动创建表
+invoice.sync({ force: true }); // 自动创建表
 
 class FinancialModel {
   /**
@@ -42,7 +42,17 @@ class FinancialModel {
   static async createInvoice(data) {
     return await invoice.create(data);
   }
+   /**
+   * 获取发票列表
+   * @param data
+   * @returns {Promise<*>}
+   */
+    static async getInvoiceList(data) {
+      return await invoice.findAll({
+        where: data,
+      });
+    }
 
-  // createInvoice
+  // getInvoiceList
 }
 module.exports = FinancialModel;

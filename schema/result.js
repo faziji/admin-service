@@ -1,9 +1,9 @@
 /**
- * 发票
+ * 成交结果
  */
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "invoice",
+    "result",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,65 +11,35 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         autoIncrement: true,
       },
-      //成交编号
-      resultId: {
+      //公告编号
+      announcementId: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        field: "resultId",
+        field: "announcementId",
       },
-      //成交结果名称
-      resultName: {
+      //公告名称
+      announcementName: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "resultName",
+        field: "announcementName",
       },
-      // 公司名称
-      companyName: {
+      //供应商账号
+      supplierUsername: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "companyName",
+        field: "supplierUsername",
       },
-      // 银行
-      bank: {
+      //供应商姓名
+      supplierName: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "bank",
+        field: "supplierName",
       },
-      // 账号
-      account: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "account",
-      },
-      // 发票金额
+      // 成交投标金额
       amount: {
         type: DataTypes.INTEGER,
         allowNull: true,
         field: "amount",
-      },
-      // 邮编
-      postcode: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        field: "postcode",
-      },
-      // 地址
-      address: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        field: "address",
-      },
-      // 电话
-      phone: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        field: "phone",
-      },
-      // 传真
-      fax: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        field: "fax",
       },
       // 附件
       attachment: {
