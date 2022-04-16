@@ -11,7 +11,7 @@ contract.sync({ force: false }); // 自动创建表
 
 // 发票
 const invoice = Sequelize.import("../schema/invoice");
-invoice.sync({ force: true }); // 自动创建表
+invoice.sync({ force: false }); // 自动创建表
 
 class FinancialModel {
   /**
