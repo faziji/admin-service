@@ -22,7 +22,13 @@ router.get("/", async (ctx, next) => {
 // 获取合同列表
 router.get("/getContractList", FinancialController.getContractList);
 
-// 创建发票列表
+// 创建合同
 router.post("/createContract", FinancialController.createContract);
+
+// 创建发票
+router.post("/createInvoice", FinancialController.createInvoice);
+
+// 获取合同列表
+router.get("/getInvoicetList", FinancialController.getInvoiceList);
 
 module.exports = router;
