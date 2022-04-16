@@ -6,7 +6,7 @@ const Sequelize = db.sequelize;
 
 // 引入数据表模型
 const tender = Sequelize.import("../schema/tender");
-tender.sync({ force: true }); // 自动创建表
+tender.sync({ force: false }); // 自动创建表
 
 class TenderModel {
   /**

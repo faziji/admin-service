@@ -15,12 +15,13 @@ const TenderModel = require("../modules/tender");
 class tenderController {
   // 根据采购公告id获取投标记录
   static async getTenderList(ctx) {
-    const announcementId = ctx.query?.announcementId;
+    const req = ctx.query
+    delete req["current"]
+    delete req["pageSize"]
+    console.log('请求的参数',req);
     try {
       // 传参为结果公告id
-      const data = await TenderModel.getTenderList({
-        announcementId,
-      });
+      const data = await TenderModel.getTenderList(req);
 
       ctx.response.status = 200;
       ctx.body = new Success(data, "获取投标列表成功");
