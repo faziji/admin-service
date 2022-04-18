@@ -28,6 +28,10 @@ resultAnnouncement.sync({ force: false }); //自动创建表
 const correctAnnouncement = Sequelize.import("../schema/correctAnnouncement");
 correctAnnouncement.sync({ force: false }); //自动创建表
 
+// 引入数据表模型：关注
+const attention = Sequelize.import("../schema/attention");
+attention.sync({ force: false }); //自动创建表
+
 class resourceModel {
   // =================征询意见==========================
   /**
@@ -255,6 +259,41 @@ class resourceModel {
       },
     });
   }
+
+  // =================关注公告=========================
+  /**
+   * 创建关注公告
+   * @param data
+   * @returns {Promise<*>}
+   */
+  static async createAttention(data) {
+    return await attention.create(data);
+  }
+
+  /**
+   * 获取关注公告列表
+   * @returns {Promise<*>}
+   */
+  static async getAttentionList(data) {
+    return await attention.findAll({
+      where: data,
+    });
+  }
+
+  /**
+   * 删除取消关注
+   * @returns {Promise<*>}
+   */
+  static async deleteAttention(req) {
+    let data = await attention.destroy({
+      where: req,
+    });
+    return data;
+  }
 }
+
+// deleteAttention
+
+// getAttentionList
 
 module.exports = resourceModel;

@@ -462,7 +462,7 @@ class resourceController {
   static async detailResultAnnouncement(ctx) {
     let { id } = ctx.query;
     if (!id) throw new ParameterException("id不能为空");
-    console.log('11111111111111');
+    console.log("11111111111111");
 
     // 获取操作
     try {
@@ -677,5 +677,74 @@ class resourceController {
     }
   }
 
+  /**
+   * 获取关注公告列表
+   * @param ctx
+   * @return 关注公告列表
+   */
+  static async getAttentionList(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await ResourceModel.getAttentionList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取关注列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+
+  /**
+   * 关注公告
+   * @param ctx
+   * @return 关注公告
+   */
+  static async createAttention(ctx) {
+    let req = ctx.request.body || {};
+    // 创建操作
+    try {
+      const data = await ResourceModel.createAttention(req);
+      ctx.response.status = 200;
+      ctx.body = new Success(data, "关注成功");
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+
+  /**
+   * 取消关注
+   * @param ctx
+   * @return 更正公告列表
+   */
+  static async deleteAttention(ctx) {
+    let req = ctx.request.body || {};
+    console.log('11111111111111111', req);
+
+    try {
+      await ResourceModel.deleteAttention(req);
+      ctx.response.status = 200;
+      ctx.body = new Success("取消关注成功！");
+    } catch (error) {
+      throw new HttpException(error);
+    }
+  }
+
+  // deleteAttention
+
+  // createAttention
 }
 module.exports = resourceController;
