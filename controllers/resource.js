@@ -100,7 +100,10 @@ class resourceController {
           delete reqData[item];
         }
       }
-      const data = await ResourceModel.getConsultationList({...reqData, status: 1});
+      const data = await ResourceModel.getConsultationList({
+        ...reqData,
+        status: 1,
+      });
 
       ctx.response.status = 200;
       ctx.body = new Success(
@@ -244,7 +247,7 @@ class resourceController {
   }
 
   /**
-   * 获取采购公告列表
+   * 获取采购公告列表（后台）
    * @param ctx
    * @return 采购公告列表
    */
@@ -263,6 +266,40 @@ class resourceController {
         }
       }
       const data = await ResourceModel.getPurchaseAnnouncementList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取征询意见列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+
+  /**
+   * 获取采购公告列表（前台）
+   * @param ctx
+   * @return 采购公告列表
+   */
+  static async getPurchaseAnnouncementListFontEnd(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await ResourceModel.getPurchaseAnnouncementList({
+        ...reqData,
+        status: 1,
+      });
 
       ctx.response.status = 200;
       ctx.body = new Success(
@@ -407,7 +444,7 @@ class resourceController {
   }
 
   /**
-   * 获取结果公告列表
+   * 获取结果公告列表（后台）
    * @param ctx
    * @return 结果公告列表
    */
@@ -426,6 +463,39 @@ class resourceController {
         }
       }
       const data = await ResourceModel.getResultAnnouncementList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取征询意见列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+  /**
+   * 获取结果公告列表（前台）
+   * @param ctx
+   * @return 结果公告列表
+   */
+  static async getResultAnnouncementListFontEnd(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await ResourceModel.getResultAnnouncementList({
+        ...reqData,
+        status: 1,
+      });
 
       ctx.response.status = 200;
       ctx.body = new Success(
@@ -574,7 +644,7 @@ class resourceController {
   }
 
   /**
-   * 获取更正公告列表
+   * 获取更正公告列表（后台）
    * @param ctx
    * @return 更正公告列表
    */
@@ -593,6 +663,39 @@ class resourceController {
         }
       }
       const data = await ResourceModel.getCorrectAnnouncementList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取更正公告列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+  /**
+   * 获取更正公告列表（前台）
+   * @param ctx
+   * @return 更正公告列表
+   */
+  static async getCorrectAnnouncementListFontEnd(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await ResourceModel.getCorrectAnnouncementList({
+        ...reqData,
+        status: 1,
+      });
 
       ctx.response.status = 200;
       ctx.body = new Success(
@@ -762,7 +865,7 @@ class resourceController {
    */
   static async deleteAttention(ctx) {
     let req = ctx.request.body || {};
-    console.log('11111111111111111', req);
+    console.log("11111111111111111", req);
 
     try {
       await ResourceModel.deleteAttention(req);

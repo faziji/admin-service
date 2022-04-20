@@ -59,7 +59,7 @@ router.post(
 // 获取：列表
 router.get(
   "/getPurchaseAnnouncementList",
-  ResourceController.getPurchaseAnnouncementList
+  ResourceController.getPurchaseAnnouncementListFontEnd
 );
 // 删除:单条
 router.post(
@@ -93,7 +93,7 @@ router.post(
 // 获取：列表
 router.get(
   "/getResultAnnouncementList",
-  ResourceController.getResultAnnouncementList
+  ResourceController.getResultAnnouncementListFontEnd
 );
 // 删除:单条
 router.post(
@@ -127,7 +127,7 @@ router.post(
 // 获取：列表
 router.get(
   "/getCorrectAnnouncementList",
-  ResourceController.getCorrectAnnouncementList
+  ResourceController.getCorrectAnnouncementListFontEnd
 );
 // 删除:单条
 router.post(
