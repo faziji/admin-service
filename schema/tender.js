@@ -23,6 +23,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: true,
         field: "announcementName",
       },
+      //公告描述
+      announcementDescription: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "announcementDescription",
+      },
       //供应商账号
       supplierUsername: {
         type: DataTypes.STRING,

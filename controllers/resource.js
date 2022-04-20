@@ -52,7 +52,7 @@ class resourceController {
   }
 
   /**
-   * 获取征询意见列表
+   * 获取征询意见列表(后台管理)
    * @param ctx
    * @return 征询意见列表
    */
@@ -71,6 +71,36 @@ class resourceController {
         }
       }
       const data = await ResourceModel.getConsultationList(reqData);
+
+      ctx.response.status = 200;
+      ctx.body = new Success(
+        Array.isArray(data) ? data : [data],
+        "获取征询意见列表成功"
+      );
+    } catch (err) {
+      throw new HttpException(err);
+    }
+  }
+  /**
+   * 获取征询意见列表（前台）
+   * @param ctx
+   * @return 征询意见列表
+   */
+  static async getConsultationListFontEnd(ctx) {
+    // 获取操作
+    try {
+      // 请求参数
+      const reqData = ctx.query;
+      delete reqData["current"];
+      delete reqData["pageSize"];
+
+      // 过滤所有空元素
+      for (let item in reqData) {
+        if (!reqData[item]) {
+          delete reqData[item];
+        }
+      }
+      const data = await ResourceModel.getConsultationList({...reqData, status: 1});
 
       ctx.response.status = 200;
       ctx.body = new Success(

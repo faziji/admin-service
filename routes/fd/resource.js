@@ -36,7 +36,7 @@ router.post("/uploadResource", UploadController.uploadResource);
 // 创建征询意见
 router.post("/createtConsultation", ResourceController.create);
 // 获取征询意见列表
-router.get("/getConsultationList", ResourceController.getConsultationList);
+router.get("/getConsultationList", ResourceController.getConsultationListFontEnd);
 // 删除征询意见:单条删除
 router.post("/deleteConsultation", ResourceController.deleteConsultation);
 // 删除征询意见:批量删除
