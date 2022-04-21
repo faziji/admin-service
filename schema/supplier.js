@@ -82,7 +82,7 @@ module.exports = function (sequelize, DataTypes) {
       avatar: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "5f6fd5d0-a362-11ec-88cd-638c2ca3f683.png",
+        defaultValue: "e7e80ed0-ba39-11ec-8e7d-1791419d4adb.png",
         field: "avatar",
       },
       // 0状态
