@@ -44,9 +44,10 @@ class tenderController {
 
   // 创建成交结果
   static async createResult(ctx) {
+    const params = ctx.request.body || {};
     try {
-      const data = await TenderModel.createResult({});
-      ctx.body = new Success(data, "投标成功");
+      const data = await TenderModel.createResult(params);
+      ctx.body = new Success(data, "生成结果成功");
     } catch (error) {
       throw new HttpException(error);
     }

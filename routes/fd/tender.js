@@ -17,7 +17,7 @@ router.get("/getTenderList", TenderController.getTenderList);
 router.post("/createTender", TenderController.createTender);
 
 // 结算获取成交结果
-// router.post("/createResult", TenderController.createResult);
+router.post("/createResult", TenderController.createResult);
 // 获取成交结果
 // router.get("/getResultList", TenderController.getResultList);
 
